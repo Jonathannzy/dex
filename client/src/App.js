@@ -1,24 +1,34 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './App.css';
+
+// Game Components
+import Lobby from './components/Lobby';
+import Game from './components/Game';
+import PlanetExplorer from './components/PlanetExplorer';
+import Documentation from './components/Documentation';
+import Leaderboard from './components/Leaderboard';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Router>
+      <div className="App">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Routes>
+            <Route path="/" element={<Lobby />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/explore/:planetId" element={<PlanetExplorer />} />
+            <Route path="/documentation" element={<Documentation />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+          </Routes>
+        </motion.div>
+      </div>
+    </Router>
   );
 }
 
