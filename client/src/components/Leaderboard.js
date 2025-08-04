@@ -9,7 +9,10 @@ import {
   Users, 
   Globe,
   BookOpen,
-  TrendingUp
+  TrendingUp,
+  Heart,
+  Coffee,
+  Fish
 } from 'lucide-react';
 import io from 'socket.io-client';
 
@@ -19,6 +22,7 @@ const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('discoveries');
   const [timeFrame, setTimeFrame] = useState('all');
+  const [answerToLife, setAnswerToLife] = useState(42);
 
   useEffect(() => {
     const newSocket = io('http://localhost:3001');
@@ -68,30 +72,30 @@ const Leaderboard = () => {
   const getCategoryTitle = (category) => {
     switch (category) {
       case 'discoveries':
-        return 'Most Discoveries';
+        return 'Most Guide Entries';
       case 'documentation':
-        return 'Best Documenters';
+        return 'Best Guide Contributors';
       case 'planets':
-        return 'Planet Explorers';
+        return 'Galactic Travelers';
       case 'score':
-        return 'Overall Score';
+        return 'Overall Guide Rating';
       default:
-        return 'Leaderboard';
+        return 'Guide Rankings';
     }
   };
 
   const getCategoryDescription = (category) => {
     switch (category) {
       case 'discoveries':
-        return 'Players with the most discoveries across all planets';
+        return 'Hitchhikers with the most Guide entries across all locations';
       case 'documentation':
-        return 'Players who documented the most discoveries';
+        return 'Contributors who wrote the most detailed Guide entries';
       case 'planets':
-        return 'Players who explored the most planets';
+        return 'Hitchhikers who visited the most locations';
       case 'score':
-        return 'Overall ranking based on all achievements';
+        return 'Overall ranking based on all Guide contributions';
       default:
-        return 'Top performers in the solar system';
+        return 'Top contributors to the Guide';
     }
   };
 
@@ -105,12 +109,15 @@ const Leaderboard = () => {
           className="back-button"
         >
           <ArrowLeft size={20} />
-          Back to Game
+          Back to Galaxy
         </motion.button>
 
         <div className="header-content">
-          <h1>Explorer Leaderboard</h1>
-          <p>Top performers in the solar system</p>
+          <h1>Guide Contributor Rankings</h1>
+          <div className="answer-to-life">
+            <span>The Answer to Life, the Universe, and Everything: {answerToLife}</span>
+          </div>
+          <p>Top contributors to the Hitchhiker's Guide</p>
         </div>
       </div>
 
@@ -121,10 +128,10 @@ const Leaderboard = () => {
             value={selectedCategory} 
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
-            <option value="discoveries">Most Discoveries</option>
-            <option value="documentation">Best Documenters</option>
-            <option value="planets">Planet Explorers</option>
-            <option value="score">Overall Score</option>
+            <option value="discoveries">Most Guide Entries</option>
+            <option value="documentation">Best Contributors</option>
+            <option value="planets">Galactic Travelers</option>
+            <option value="score">Overall Rating</option>
           </select>
         </div>
 
@@ -176,14 +183,14 @@ const Leaderboard = () => {
               </div>
               <div className="player-info">
                 <h3>{player.name}</h3>
-                <p>{player.title || 'Explorer'}</p>
+                <p>{player.title || 'Mostly Harmless Hitchhiker'}</p>
               </div>
             </div>
 
             <div className="stats-section">
               <div className="stat-item">
                 <Globe size={16} />
-                <span>{player.discoveries || 0} discoveries</span>
+                <span>{player.discoveries || 0} Guide entries</span>
               </div>
               <div className="stat-item">
                 <BookOpen size={16} />
@@ -191,7 +198,7 @@ const Leaderboard = () => {
               </div>
               <div className="stat-item">
                 <Globe size={16} />
-                <span>{player.planetsExplored || 0} planets</span>
+                <span>{player.planetsExplored || 0} locations</span>
               </div>
             </div>
 
@@ -203,9 +210,9 @@ const Leaderboard = () => {
                 {selectedCategory === 'score' && player.score}
               </div>
               <div className="score-label">
-                {selectedCategory === 'discoveries' && 'discoveries'}
-                {selectedCategory === 'documentation' && 'documented'}
-                {selectedCategory === 'planets' && 'planets'}
+                {selectedCategory === 'discoveries' && 'entries'}
+                {selectedCategory === 'documentation' && 'contributions'}
+                {selectedCategory === 'planets' && 'locations'}
                 {selectedCategory === 'score' && 'points'}
               </div>
             </div>
@@ -216,34 +223,58 @@ const Leaderboard = () => {
       {leaderboard.length === 0 && (
         <div className="no-leaderboard">
           <Trophy size={48} />
-          <h3>No data available</h3>
+          <h3>No Guide contributors yet</h3>
           <p>Start exploring to see your ranking!</p>
+          <small>Remember: DON'T PANIC</small>
         </div>
       )}
 
       <div className="achievement-info">
-        <h3>How to climb the leaderboard:</h3>
+        <h3>How to climb the Guide rankings:</h3>
         <div className="achievement-tips">
           <div className="tip">
             <Globe size={20} />
             <div>
-              <h4>Make Discoveries</h4>
-              <p>Explore planets and discover new features</p>
+              <h4>Add Guide Entries</h4>
+              <p>Explore locations and add entries to the Guide</p>
             </div>
           </div>
           <div className="tip">
             <BookOpen size={20} />
             <div>
-              <h4>Document Findings</h4>
-              <p>Write detailed documentation of your discoveries</p>
+              <h4>Write Detailed Entries</h4>
+              <p>Document your findings with detailed descriptions</p>
             </div>
           </div>
           <div className="tip">
             <Globe size={20} />
             <div>
-              <h4>Explore Multiple Planets</h4>
-              <p>Visit different planets to increase your score</p>
+              <h4>Visit Multiple Locations</h4>
+              <p>Explore different places across the galaxy</p>
             </div>
+          </div>
+          <div className="tip">
+            <Coffee size={20} />
+            <div>
+              <h4>Always Carry a Towel</h4>
+              <p>Essential for any self-respecting hitchhiker</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="guide-footer">
+        <div className="guide-stats">
+          <div className="stat">
+            <Fish size={20} />
+            <span>Babel Fish Universal Translator Active</span>
+          </div>
+          <div className="stat">
+            <Heart size={20} />
+            <span>Mostly Harmless</span>
+          </div>
+          <div className="stat">
+            <span className="panic-text">DON'T PANIC</span>
           </div>
         </div>
       </div>

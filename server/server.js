@@ -22,32 +22,33 @@ let planets = [];
 let allDiscoveries = [];
 let planetDiscoveries = {};
 
-// Initialize planets
-const initializePlanets = () => {
-  const planetTypes = [
-    { name: 'Mercury', type: 'rocky', color: '#8B7355', size: 0.8, distance: 2 },
-    { name: 'Venus', type: 'volcanic', color: '#FFA500', size: 1.2, distance: 3 },
-    { name: 'Earth', type: 'terrestrial', color: '#4B9CD3', size: 1.5, distance: 4 },
-    { name: 'Mars', type: 'desert', color: '#CD5C5C', size: 1.0, distance: 5 },
-    { name: 'Jupiter', type: 'gas_giant', color: '#DAA520', size: 2.5, distance: 7 },
-    { name: 'Saturn', type: 'ringed', color: '#F4A460', size: 2.2, distance: 9 },
-    { name: 'Uranus', type: 'ice_giant', color: '#40E0D0', size: 1.8, distance: 11 },
-    { name: 'Neptune', type: 'ice_giant', color: '#4169E1', size: 1.7, distance: 13 }
-  ];
+  // Initialize Hitchhiker's Guide locations
+  const initializePlanets = () => {
+    const locationTypes = [
+      { name: 'Magrathea', type: 'planet_factory', color: '#8B4513', size: 1.8, distance: 2, description: 'The legendary planet-building factory' },
+      { name: 'Vogon Homeworld', type: 'bureaucratic', color: '#556B2F', size: 1.2, distance: 3, description: 'Home of the bureaucratic Vogons' },
+      { name: 'Damogran', type: 'tropical', color: '#228B22', size: 1.5, distance: 4, description: 'Where the Guide was first conceived' },
+      { name: 'Vogon Constructor Fleet', type: 'space_station', color: '#696969', size: 2.0, distance: 5, description: 'Floating bureaucratic nightmare' },
+      { name: 'Heart of Gold', type: 'spaceship', color: '#FFD700', size: 1.0, distance: 6, description: 'Ship with Infinite Improbability Drive' },
+      { name: 'Milliways', type: 'restaurant', color: '#FF6347', size: 1.3, distance: 7, description: 'The Restaurant at the End of the Universe' },
+      { name: 'Vogon Poetry Reading', type: 'cultural_event', color: '#8B0000', size: 0.8, distance: 8, description: 'The third worst poetry in the universe' },
+      { name: 'Deep Thought', type: 'computer', color: '#4169E1', size: 1.6, distance: 9, description: 'The computer that calculated the answer to life' }
+    ];
 
-  planets = planetTypes.map((planet, index) => ({
-    ...planet,
-    id: index,
-    discovered: false,
-    discoveries: [],
-    players: []
-  }));
+    planets = locationTypes.map((location, index) => ({
+      ...location,
+      id: index,
+      discovered: false,
+      discoveries: [],
+      players: [],
+      guideEntries: []
+    }));
 
-  // Initialize planet discoveries
-  for (let i = 0; i < planets.length; i++) {
-    planetDiscoveries[i] = [];
-  }
-};
+    // Initialize location discoveries
+    for (let i = 0; i < planets.length; i++) {
+      planetDiscoveries[i] = [];
+    }
+  };
 
 // Initialize the game
 initializePlanets();

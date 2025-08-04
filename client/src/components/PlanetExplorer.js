@@ -8,14 +8,16 @@ import {
   Camera, 
   BookOpen, 
   Users, 
-  MapPin,
+  Coffee,
   MessageCircle,
-  Trophy,
+  Heart,
   Zap,
   Tree,
-  Mountain,
-  Droplets,
-  Flame
+  Ship,
+  Building,
+  Utensils,
+  Music,
+  Cpu
 } from 'lucide-react';
 import io from 'socket.io-client';
 
@@ -29,42 +31,98 @@ const PlanetExplorer = () => {
   const [players, setPlayers] = useState([]);
   const [showDocumentation, setShowDocumentation] = useState(false);
   const [documentation, setDocumentation] = useState('');
+  const [vogonEncounter, setVogonEncounter] = useState(false);
 
-  const planetData = {
-    0: { name: 'Mercury', type: 'rocky', color: '#8B7355', features: ['craters', 'mountains', 'plains'] },
-    1: { name: 'Venus', type: 'volcanic', color: '#FFA500', features: ['volcanoes', 'acid_rain', 'thick_atmosphere'] },
-    2: { name: 'Earth', type: 'terrestrial', color: '#4B9CD3', features: ['oceans', 'continents', 'life'] },
-    3: { name: 'Mars', type: 'desert', color: '#CD5C5C', features: ['canyons', 'dust_storms', 'polar_caps'] },
-    4: { name: 'Jupiter', type: 'gas_giant', color: '#DAA520', features: ['storms', 'moons', 'rings'] },
-    5: { name: 'Saturn', type: 'ringed', color: '#F4A460', features: ['rings', 'moons', 'storms'] },
-    6: { name: 'Uranus', type: 'ice_giant', color: '#40E0D0', features: ['ice', 'moons', 'atmosphere'] },
-    7: { name: 'Neptune', type: 'ice_giant', color: '#4169E1', features: ['storms', 'moons', 'wind'] }
+  const locationData = {
+    0: { 
+      name: 'Magrathea', 
+      type: 'planet_factory', 
+      color: '#8B4513', 
+      features: ['planet_factory', 'underground_cities', 'slumbering_workers'],
+      description: 'The legendary planet-building factory where worlds are crafted'
+    },
+    1: { 
+      name: 'Vogon Homeworld', 
+      type: 'bureaucratic', 
+      color: '#556B2F', 
+      features: ['bureaucracy_offices', 'paperwork_mountains', 'vogon_poetry'],
+      description: 'Home of the bureaucratic Vogons and their paperwork'
+    },
+    2: { 
+      name: 'Damogran', 
+      type: 'tropical', 
+      color: '#228B22', 
+      features: ['guide_offices', 'tropical_beaches', 'babel_fish_pools'],
+      description: 'Where the Hitchhiker\'s Guide was first conceived'
+    },
+    3: { 
+      name: 'Vogon Constructor Fleet', 
+      type: 'space_station', 
+      color: '#696969', 
+      features: ['constructor_ships', 'demolition_orders', 'bureaucratic_red_tape'],
+      description: 'Floating bureaucratic nightmare in space'
+    },
+    4: { 
+      name: 'Heart of Gold', 
+      type: 'spaceship', 
+      color: '#FFD700', 
+      features: ['infinite_improbability_drive', 'tea_machine', 'marvin_android'],
+      description: 'Ship with Infinite Improbability Drive'
+    },
+    5: { 
+      name: 'Milliways', 
+      type: 'restaurant', 
+      color: '#FF6347', 
+      features: ['restaurant_kitchen', 'time_viewing_windows', 'cosmic_cuisine'],
+      description: 'The Restaurant at the End of the Universe'
+    },
+    6: { 
+      name: 'Vogon Poetry Reading', 
+      type: 'cultural_event', 
+      color: '#8B0000', 
+      features: ['poetry_podium', 'audience_seats', 'third_worst_poetry'],
+      description: 'The third worst poetry in the universe'
+    },
+    7: { 
+      name: 'Deep Thought', 
+      type: 'computer', 
+      color: '#4169E1', 
+      features: ['computer_terminals', 'answer_calculation', 'seven_million_years'],
+      description: 'The computer that calculated the answer to life'
+    }
   };
 
   const discoveryTypes = {
-    craters: { icon: <Zap />, name: 'Impact Craters', description: 'Ancient meteorite impacts' },
-    mountains: { icon: <Mountain />, name: 'Mountain Ranges', description: 'Tectonic formations' },
-    plains: { icon: <MapPin />, name: 'Vast Plains', description: 'Flat terrain areas' },
-    volcanoes: { icon: <Flame />, name: 'Active Volcanoes', description: 'Volcanic activity' },
-    acid_rain: { icon: <Droplets />, name: 'Acid Rain', description: 'Corrosive precipitation' },
-    thick_atmosphere: { icon: <Zap />, name: 'Dense Atmosphere', description: 'Heavy atmospheric pressure' },
-    oceans: { icon: <Droplets />, name: 'Oceans', description: 'Large bodies of water' },
-    continents: { icon: <Mountain />, name: 'Continents', description: 'Land masses' },
-    life: { icon: <Tree />, name: 'Life Forms', description: 'Biological organisms' },
-    canyons: { icon: <Mountain />, name: 'Deep Canyons', description: 'Erosional features' },
-    dust_storms: { icon: <Zap />, name: 'Dust Storms', description: 'Atmospheric phenomena' },
-    polar_caps: { icon: <Droplets />, name: 'Polar Ice Caps', description: 'Frozen regions' },
-    storms: { icon: <Zap />, name: 'Atmospheric Storms', description: 'Weather systems' },
-    moons: { icon: <MapPin />, name: 'Natural Satellites', description: 'Orbiting bodies' },
-    rings: { icon: <Zap />, name: 'Planetary Rings', description: 'Orbital debris' },
-    ice: { icon: <Droplets />, name: 'Ice Formations', description: 'Frozen compounds' },
-    wind: { icon: <Zap />, name: 'High Winds', description: 'Atmospheric currents' }
+    planet_factory: { icon: <Building />, name: 'Planet Factory', description: 'Where worlds are manufactured' },
+    underground_cities: { icon: <Building />, name: 'Underground Cities', description: 'Slumbering workers in suspended animation' },
+    slumbering_workers: { icon: <Users />, name: 'Slumbering Workers', description: 'Workers in deep sleep for millennia' },
+    bureaucracy_offices: { icon: <Building />, name: 'Bureaucracy Offices', description: 'Endless paperwork and forms' },
+    paperwork_mountains: { icon: <BookOpen />, name: 'Paperwork Mountains', description: 'Mountains of bureaucratic forms' },
+    vogon_poetry: { icon: <Music />, name: 'Vogon Poetry', description: 'The third worst poetry in the universe' },
+    guide_offices: { icon: <BookOpen />, name: 'Guide Offices', description: 'Where the Guide is compiled' },
+    tropical_beaches: { icon: <Tree />, name: 'Tropical Beaches', description: 'Beautiful beaches of Damogran' },
+    babel_fish_pools: { icon: <MessageCircle />, name: 'Babel Fish Pools', description: 'Universal translators swimming' },
+    constructor_ships: { icon: <Ship />, name: 'Constructor Ships', description: 'Massive planet-destroying vessels' },
+    demolition_orders: { icon: <Zap />, name: 'Demolition Orders', description: 'Official paperwork for planet destruction' },
+    bureaucratic_red_tape: { icon: <BookOpen />, name: 'Bureaucratic Red Tape', description: 'Endless administrative procedures' },
+    infinite_improbability_drive: { icon: <Zap />, name: 'Infinite Improbability Drive', description: 'Makes the impossible possible' },
+    tea_machine: { icon: <Coffee />, name: 'Tea Machine', description: 'Produces the perfect cup of tea' },
+    marvin_android: { icon: <Heart />, name: 'Marvin Android', description: 'Depressed robot with a brain the size of a planet' },
+    restaurant_kitchen: { icon: <Utensils />, name: 'Restaurant Kitchen', description: 'Where cosmic cuisine is prepared' },
+    time_viewing_windows: { icon: <Camera />, name: 'Time Viewing Windows', description: 'Watch the end of the universe' },
+    cosmic_cuisine: { icon: <Utensils />, name: 'Cosmic Cuisine', description: 'Food from across the galaxy' },
+    poetry_podium: { icon: <Music />, name: 'Poetry Podium', description: 'Where Vogon poetry is recited' },
+    audience_seats: { icon: <Users />, name: 'Audience Seats', description: 'Seats for poetry victims' },
+    third_worst_poetry: { icon: <Music />, name: 'Third Worst Poetry', description: 'The actual poetry being recited' },
+    computer_terminals: { icon: <Cpu />, name: 'Computer Terminals', description: 'Deep Thought\'s interface' },
+    answer_calculation: { icon: <Cpu />, name: 'Answer Calculation', description: 'The process of calculating 42' },
+    seven_million_years: { icon: <Zap />, name: 'Seven Million Years', description: 'How long the calculation took' }
   };
 
   useEffect(() => {
     const newSocket = io('http://localhost:3001');
     setSocket(newSocket);
-    setPlanet(planetData[planetId]);
+    setPlanet(locationData[planetId]);
 
     newSocket.emit('joinPlanet', { planetId: parseInt(planetId) });
 
@@ -80,7 +138,16 @@ const PlanetExplorer = () => {
       setDiscoveries(planetDiscoveries);
     });
 
+    // Random Vogon encounter
+    const vogonInterval = setInterval(() => {
+      if (Math.random() < 0.15) { // 15% chance every 30 seconds
+        setVogonEncounter(true);
+        setTimeout(() => setVogonEncounter(false), 4000);
+      }
+    }, 30000);
+
     return () => {
+      clearInterval(vogonInterval);
       newSocket.emit('leavePlanet', { planetId: parseInt(planetId) });
       newSocket.close();
     };
@@ -151,15 +218,15 @@ const PlanetExplorer = () => {
           className="back-button"
         >
           <ArrowLeft size={20} />
-          Back to Solar System
+          Back to Galaxy
         </motion.button>
 
         <div className="planet-info">
           <h2>{planet.name}</h2>
-          <p>{planet.type} planet</p>
+          <p>{planet.description}</p>
           <div className="player-count">
             <Users size={16} />
-            <span>{players.length} explorers here</span>
+            <span>{players.length} hitchhikers here</span>
           </div>
         </div>
 
@@ -171,9 +238,22 @@ const PlanetExplorer = () => {
           disabled={discoveries.length >= planet.features.length}
         >
           <Camera size={20} />
-          Make Discovery
+          Add to Guide
         </motion.button>
       </div>
+
+      {vogonEncounter && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          className="vogon-encounter-alert"
+        >
+          <Music size={24} />
+          <span>Vogon Poetry Reading in Progress!</span>
+          <small>Cover your ears and hope for the best...</small>
+        </motion.div>
+      )}
 
       <div className="explorer-content">
         <div className="planet-view">
@@ -192,7 +272,7 @@ const PlanetExplorer = () => {
         </div>
 
         <div className="discoveries-panel">
-          <h3>Discoveries ({discoveries.length}/{planet.features.length})</h3>
+          <h3>Guide Entries ({discoveries.length}/{planet.features.length})</h3>
           
           <div className="discoveries-list">
             {discoveries.map((discovery) => (
@@ -209,7 +289,7 @@ const PlanetExplorer = () => {
                   <div className="discovery-info">
                     <h4>{discoveryTypes[discovery.type]?.name}</h4>
                     <p>{discovery.description}</p>
-                    <small>Discovered by {discovery.discoveredBy} at {discovery.timestamp}</small>
+                    <small>Added by {discovery.discoveredBy} at {discovery.timestamp}</small>
                   </div>
                 </div>
                 
@@ -228,7 +308,7 @@ const PlanetExplorer = () => {
                     className="document-button"
                   >
                     <BookOpen size={16} />
-                    Document
+                    Write Guide Entry
                   </motion.button>
                 )}
               </motion.div>
@@ -238,7 +318,8 @@ const PlanetExplorer = () => {
           {discoveries.length === 0 && (
             <div className="no-discoveries">
               <Camera size={48} />
-              <p>No discoveries yet. Start exploring!</p>
+              <p>No Guide entries yet. Start exploring!</p>
+              <small>Remember: DON'T PANIC</small>
             </div>
           )}
         </div>
@@ -247,19 +328,19 @@ const PlanetExplorer = () => {
       {showDocumentation && (
         <div className="documentation-modal">
           <div className="modal-content">
-            <h3>Document Discovery</h3>
-            <p>Document your findings about: {discoveryTypes[currentDiscovery?.type]?.name}</p>
+            <h3>Write Guide Entry</h3>
+            <p>Contribute to the Guide about: {discoveryTypes[currentDiscovery?.type]?.name}</p>
             
             <textarea
               value={documentation}
               onChange={(e) => setDocumentation(e.target.value)}
-              placeholder="Describe what you found..."
+              placeholder="Share your mostly harmless observations..."
               rows={4}
             />
             
             <div className="modal-actions">
               <button onClick={() => setShowDocumentation(false)}>Cancel</button>
-              <button onClick={saveDocumentation}>Save Documentation</button>
+              <button onClick={saveDocumentation}>Save to Guide</button>
             </div>
           </div>
         </div>

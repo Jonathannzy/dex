@@ -38,12 +38,12 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.game-title {
+.guide-title {
   margin-bottom: 40px;
 }
 
-.game-title h1 {
-  font-size: 3rem;
+.guide-title h1 {
+  font-size: 2.5rem;
   font-weight: 700;
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
   -webkit-background-clip: text;
@@ -51,15 +51,125 @@ body {
   margin-bottom: 10px;
 }
 
-.game-title p {
-  font-size: 1.2rem;
+.guide-title p {
+  font-size: 1.1rem;
   color: #b0b0b0;
   margin-bottom: 20px;
+}
+
+.don-t-panic {
+  margin: 20px 0;
+  padding: 15px;
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.panic-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .title-icon {
   color: #4ecdc4;
   margin-bottom: 20px;
+}
+
+.guide-info {
+  margin-bottom: 30px;
+}
+
+.guide-quote {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: left;
+  font-style: italic;
+  color: #b0b0b0;
+  line-height: 1.6;
+}
+
+.guide-quote p {
+  margin-bottom: 10px;
+}
+
+.babel-fish-section {
+  margin-bottom: 20px;
+}
+
+.babel-fish {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(78, 205, 196, 0.1);
+  border: 1px solid rgba(78, 205, 196, 0.3);
+  border-radius: 10px;
+  padding: 10px;
+  color: #4ecdc4;
+}
+
+.guide-tips {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.guide-tips h4 {
+  color: #4ecdc4;
+  margin-bottom: 15px;
+}
+
+.guide-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.guide-tips li {
+  padding: 8px 0;
+  color: #b0b0b0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.guide-tips li:before {
+  content: "☕ ";
+  color: #4ecdc4;
+  margin-right: 10px;
+}
+
+.vogon-poetry-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(139, 0, 0, 0.9);
+  border: 2px solid #ff6b6b;
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  z-index: 1000;
+  max-width: 500px;
+  width: 90%;
+}
+
+.vogon-poetry-content h3 {
+  color: #ff6b6b;
+  margin-bottom: 15px;
+}
+
+.vogon-poem {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.vogon-poetry-content small {
+  color: #b0b0b0;
+  font-size: 0.9rem;
 }
 
 .lobby-form {
@@ -207,6 +317,63 @@ body {
   font-size: 0.9rem;
 }
 
+.guide-motto {
+  margin-top: 5px;
+}
+
+.guide-motto span {
+  color: #ff6b6b;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.infinite-probability-alert {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.infinite-probability-alert small {
+  opacity: 0.8;
+  font-weight: normal;
+}
+
+.guide-footer {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+}
+
+.guide-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4ecdc4;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
 .header-button {
   display: flex;
   align-items: center;
@@ -349,9 +516,37 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.chat-header h3 {
+.babel-fish-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+}
+
+.babel-fish-status.active {
+  color: #4ecdc4;
+}
+
+.babel-fish-status.malfunctioning {
+  color: #ff6b6b;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-title h3 {
   color: #4ecdc4;
   font-size: 1rem;
+  margin: 0;
 }
 
 .online-players {
@@ -360,6 +555,59 @@ body {
   gap: 5px;
   color: #b0b0b0;
   font-size: 0.8rem;
+}
+
+.vogon-warning {
+  background: rgba(139, 0, 0, 0.8);
+  color: #ff6b6b;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.translated-text {
+  font-style: italic;
+  color: #ff6b6b;
+}
+
+.chat-footer {
+  padding: 10px 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.guide-reminder {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #b0b0b0;
+  font-size: 0.8rem;
+}
+
+.panic-reminder {
+  color: #ff6b6b;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.player-status {
+  color: #4ecdc4;
+  font-size: 0.7rem;
+  font-style: italic;
 }
 
 .chat-messages {
@@ -566,6 +814,19 @@ body {
 .discover-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.vogon-encounter-alert {
+  background: rgba(139, 0, 0, 0.8);
+  color: #ff6b6b;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+  animation: shake 0.5s infinite;
 }
 
 .explorer-content {
@@ -1280,4 +1541,153 @@ body {
     width: calc(100vw - 20px);
     height: 300px;
   }
+}
+
+/* Hitchhiker's Guide Additional Styles */
+.guide-edition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+  color: #4ecdc4;
+  font-weight: 600;
+}
+
+.answer-to-life {
+  background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin: 10px 0;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.guide-intro {
+  margin-bottom: 30px;
+}
+
+.guide-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.guide-disclaimer h4 {
+  color: #4ecdc4;
+  margin-bottom: 10px;
+}
+
+.guide-disclaimer p {
+  color: #b0b0b0;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.guide-footer {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.guide-footer .guide-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.guide-footer .stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+.panic-text {
+  color: #ff6b6b;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.locations-panel {
+  width: 350px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.locations-panel h3 {
+  color: #4ecdc4;
+  margin-bottom: 20px;
+}
+
+.locations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.location-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.location-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #4ecdc4;
+}
+
+.location-card.discovered {
+  border-color: #4ecdc4;
+  background: rgba(78, 205, 196, 0.1);
+}
+
+.location-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.location-info h4 {
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.location-info p {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.location-info small {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.location-status {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.galaxy-view {
+  flex: 1;
+  height: calc(100vh - 100px);
+  position: relative;
 }

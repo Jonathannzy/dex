@@ -73,12 +73,28 @@
         .error {
             color: #ff6b6b;
         }
+        .don-t-panic {
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .panic-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body>
     <div class="test-container">
-        <h1 class="game-title">🌌 Cosmic Explorers</h1>
-        <p>Multiplayer Planet Exploration Game</p>
+        <h1 class="game-title">🌌 The Hitchhiker's Guide to the Galaxy</h1>
+        <div class="don-t-panic">
+            <span class="panic-text">DON'T PANIC</span>
+        </div>
+        <p>Multiplayer Edition - A Mostly Harmless Adventure</p>
         
         <div class="status">
             <h3>Server Status</h3>
@@ -88,55 +104,55 @@
         <div class="feature-list">
             <div class="feature">
                 <h3>🚀 Multiplayer Experience</h3>
-                <p>Real-time multiplayer with live chat and player tracking</p>
+                <p>Real-time multiplayer with Babel Fish chat and player tracking</p>
             </div>
             <div class="feature">
-                <h3>🌍 Planet Exploration</h3>
-                <p>Explore 8 unique planets with 3D visualization</p>
+                <h3>🌍 Galactic Exploration</h3>
+                <p>Explore 8 unique locations from the Hitchhiker's Guide</p>
             </div>
             <div class="feature">
-                <h3>🔍 Discovery System</h3>
-                <p>Make discoveries and document your findings</p>
+                <h3>📖 Guide Entries</h3>
+                <p>Contribute to the Guide with your discoveries</p>
             </div>
             <div class="feature">
-                <h3>🏆 Leaderboard</h3>
-                <p>Compete with other explorers for top spots</p>
+                <h3>🏆 Guide Rankings</h3>
+                <p>Compete for top spots in Guide contributions</p>
             </div>
         </div>
 
-        <h3>Available Planets</h3>
+        <h3>Galactic Destinations</h3>
         <div class="planet-grid">
             <div class="planet">
-                <div class="planet-name">Mercury</div>
-                <div class="planet-type">Rocky Planet</div>
+                <div class="planet-name">Magrathea</div>
+                <div class="planet-type">Planet Factory</div>
             </div>
             <div class="planet">
-                <div class="planet-name">Venus</div>
-                <div class="planet-type">Volcanic Planet</div>
+                <div class="planet-name">Vogon Homeworld</div>
+                <div class="planet-type">Bureaucratic</div>
             </div>
             <div class="planet">
-                <div class="planet-name">Earth</div>
-                <div class="planet-type">Terrestrial Planet</div>
+                <div class="planet-name">Damogran</div>
+                <div class="planet-type">Tropical</div>
             </div>
             <div class="planet">
-                <div class="planet-name">Mars</div>
-                <div class="planet-type">Desert Planet</div>
+                <div class="planet-name">Heart of Gold</div>
+                <div class="planet-type">Spaceship</div>
             </div>
             <div class="planet">
-                <div class="planet-name">Jupiter</div>
-                <div class="planet-type">Gas Giant</div>
+                <div class="planet-name">Milliways</div>
+                <div class="planet-type">Restaurant</div>
             </div>
             <div class="planet">
-                <div class="planet-name">Saturn</div>
-                <div class="planet-type">Ringed Planet</div>
+                <div class="planet-name">Deep Thought</div>
+                <div class="planet-type">Computer</div>
             </div>
             <div class="planet">
-                <div class="planet-name">Uranus</div>
-                <div class="planet-type">Ice Giant</div>
+                <div class="planet-name">Vogon Poetry</div>
+                <div class="planet-type">Cultural Event</div>
             </div>
             <div class="planet">
-                <div class="planet-name">Neptune</div>
-                <div class="planet-type">Ice Giant</div>
+                <div class="planet-name">Constructor Fleet</div>
+                <div class="planet-type">Space Station</div>
             </div>
         </div>
 
@@ -145,7 +161,8 @@
             <p>1. Start the server: <code>cd server && node server.js</code></p>
             <p>2. Start the client: <code>cd client && npm start</code></p>
             <p>3. Open your browser to <code>http://localhost:3000</code></p>
-            <p>4. Enter your explorer name and start exploring!</p>
+            <p>4. Enter your hitchhiker name and start contributing to the Guide!</p>
+            <p><strong>Remember: Always carry a towel and DON'T PANIC!</strong></p>
         </div>
     </div>
 

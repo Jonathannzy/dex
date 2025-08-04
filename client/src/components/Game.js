@@ -7,10 +7,12 @@ import {
   Globe, 
   Users, 
   BookOpen, 
-  Trophy, 
+  Coffee, 
   Home,
   MessageCircle,
-  Settings
+  Heart,
+  Zap,
+  Ship
 } from 'lucide-react';
 import io from 'socket.io-client';
 import Planet from './Planet';
@@ -23,34 +25,36 @@ const Game = () => {
   const [planets, setPlanets] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState(null);
   const [showChat, setShowChat] = useState(false);
+  const [infiniteProbability, setInfiniteProbability] = useState(false);
   const navigate = useNavigate();
 
-  // Generate planets data
-  const generatePlanets = () => {
-    const planetTypes = [
-      { name: 'Mercury', type: 'rocky', color: '#8B7355', size: 0.8, distance: 2 },
-      { name: 'Venus', type: 'volcanic', color: '#FFA500', size: 1.2, distance: 3 },
-      { name: 'Earth', type: 'terrestrial', color: '#4B9CD3', size: 1.5, distance: 4 },
-      { name: 'Mars', type: 'desert', color: '#CD5C5C', size: 1.0, distance: 5 },
-      { name: 'Jupiter', type: 'gas_giant', color: '#DAA520', size: 2.5, distance: 7 },
-      { name: 'Saturn', type: 'ringed', color: '#F4A460', size: 2.2, distance: 9 },
-      { name: 'Uranus', type: 'ice_giant', color: '#40E0D0', size: 1.8, distance: 11 },
-      { name: 'Neptune', type: 'ice_giant', color: '#4169E1', size: 1.7, distance: 13 }
+  // Generate Hitchhiker's Guide locations
+  const generateLocations = () => {
+    const locationTypes = [
+      { name: 'Magrathea', type: 'planet_factory', color: '#8B4513', size: 1.8, distance: 2, description: 'The legendary planet-building factory' },
+      { name: 'Vogon Homeworld', type: 'bureaucratic', color: '#556B2F', size: 1.2, distance: 3, description: 'Home of the bureaucratic Vogons' },
+      { name: 'Damogran', type: 'tropical', color: '#228B22', size: 1.5, distance: 4, description: 'Where the Guide was first conceived' },
+      { name: 'Vogon Constructor Fleet', type: 'space_station', color: '#696969', size: 2.0, distance: 5, description: 'Floating bureaucratic nightmare' },
+      { name: 'Heart of Gold', type: 'spaceship', color: '#FFD700', size: 1.0, distance: 6, description: 'Ship with Infinite Improbability Drive' },
+      { name: 'Milliways', type: 'restaurant', color: '#FF6347', size: 1.3, distance: 7, description: 'The Restaurant at the End of the Universe' },
+      { name: 'Vogon Poetry Reading', type: 'cultural_event', color: '#8B0000', size: 0.8, distance: 8, description: 'The third worst poetry in the universe' },
+      { name: 'Deep Thought', type: 'computer', color: '#4169E1', size: 1.6, distance: 9, description: 'The computer that calculated the answer to life' }
     ];
 
-    return planetTypes.map((planet, index) => ({
-      ...planet,
+    return locationTypes.map((location, index) => ({
+      ...location,
       id: index,
       discovered: false,
       discoveries: [],
-      players: []
+      players: [],
+      guideEntries: []
     }));
   };
 
   useEffect(() => {
     const newSocket = io('http://localhost:3001');
     setSocket(newSocket);
-    setPlanets(generatePlanets());
+    setPlanets(generateLocations());
 
     newSocket.on('playerUpdate', (playerList) => {
       setPlayers(playerList);
@@ -76,10 +80,21 @@ const Game = () => {
       ));
     });
 
-    return () => newSocket.close();
+    // Infinite Improbability Drive effect
+    const improbabilityInterval = setInterval(() => {
+      if (Math.random() < 0.05) { // 5% chance every 30 seconds
+        setInfiniteProbability(true);
+        setTimeout(() => setInfiniteProbability(false), 3000);
+      }
+    }, 30000);
+
+    return () => {
+      clearInterval(improbabilityInterval);
+      newSocket.close();
+    };
   }, []);
 
-  const explorePlanet = (planetId) => {
+  const exploreLocation = (planetId) => {
     if (socket) {
       socket.emit('explorePlanet', { planetId });
       navigate(`/explore/${planetId}`);
@@ -109,15 +124,18 @@ const Game = () => {
             className="header-button"
           >
             <Home size={20} />
-            Lobby
+            Guide Lobby
           </motion.button>
         </div>
         
         <div className="header-center">
-          <h2>Solar System Explorer</h2>
+          <h2>The Hitchhiker's Guide to the Galaxy</h2>
           <div className="player-count">
             <Users size={16} />
-            <span>{players.length} Explorers Online</span>
+            <span>{players.length} Hitchhikers Online</span>
+          </div>
+          <div className="guide-motto">
+            <span>DON'T PANIC</span>
           </div>
         </div>
 
@@ -129,7 +147,7 @@ const Game = () => {
             className="header-button"
           >
             <MessageCircle size={20} />
-            Chat
+            Babel Fish Chat
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -138,7 +156,7 @@ const Game = () => {
             className="header-button"
           >
             <BookOpen size={20} />
-            Docs
+            Guide Entries
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -146,14 +164,27 @@ const Game = () => {
             onClick={goToLeaderboard}
             className="header-button"
           >
-            <Trophy size={20} />
-            Leaderboard
+            <Heart size={20} />
+            Guide Rankings
           </motion.button>
         </div>
       </div>
 
+      {infiniteProbability && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          className="infinite-probability-alert"
+        >
+          <Zap size={24} />
+          <span>Infinite Improbability Drive Activated!</span>
+          <small>You may experience some temporal anomalies...</small>
+        </motion.div>
+      )}
+
       <div className="game-content">
-        <div className="solar-system">
+        <div className="galaxy-view">
           <Canvas camera={{ position: [0, 5, 15], fov: 60 }}>
             <ambientLight intensity={0.3} />
             <pointLight position={[10, 10, 10]} intensity={1} />
@@ -163,7 +194,7 @@ const Game = () => {
               <Planet
                 key={planet.id}
                 planet={planet}
-                onClick={() => explorePlanet(planet.id)}
+                onClick={() => exploreLocation(planet.id)}
                 isSelected={selectedPlanet?.id === planet.id}
               />
             ))}
@@ -172,28 +203,28 @@ const Game = () => {
           </Canvas>
         </div>
 
-        <div className="planets-panel">
-          <h3>Available Planets</h3>
-          <div className="planets-list">
+        <div className="locations-panel">
+          <h3>Galactic Destinations</h3>
+          <div className="locations-list">
             {planets.map((planet) => (
               <motion.div
                 key={planet.id}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`planet-card ${planet.discovered ? 'discovered' : ''}`}
-                onClick={() => explorePlanet(planet.id)}
+                className={`location-card ${planet.discovered ? 'discovered' : ''}`}
+                onClick={() => exploreLocation(planet.id)}
               >
-                <div className="planet-info">
+                <div className="location-info">
                   <Globe size={24} color={planet.color} />
                   <div>
                     <h4>{planet.name}</h4>
-                    <p>{planet.type}</p>
-                    <small>{planet.players.length} explorers</small>
+                    <p>{planet.description}</p>
+                    <small>{planet.players.length} hitchhikers</small>
                   </div>
                 </div>
-                <div className="planet-status">
+                <div className="location-status">
                   {planet.discovered ? (
-                    <span className="discovered-badge">Explored</span>
+                    <span className="discovered-badge">Guide Entry Complete</span>
                   ) : (
                     <span className="undiscovered-badge">Unexplored</span>
                   )}
@@ -208,6 +239,23 @@ const Game = () => {
             <Chat socket={socket} />
           </div>
         )}
+      </div>
+
+      <div className="guide-footer">
+        <div className="guide-stats">
+          <div className="stat">
+            <span className="stat-number">42</span>
+            <span className="stat-label">The Answer</span>
+          </div>
+          <div className="stat">
+            <span className="stat-number">{planets.filter(p => p.discovered).length}</span>
+            <span className="stat-label">Guide Entries</span>
+          </div>
+          <div className="stat">
+            <span className="stat-number">{players.length}</span>
+            <span className="stat-label">Mostly Harmless</span>
+          </div>
+        </div>
       </div>
     </div>
   );

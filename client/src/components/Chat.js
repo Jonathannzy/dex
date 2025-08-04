@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Users, MessageCircle } from 'lucide-react';
+import { Send, Users, MessageCircle, Fish, Music, Coffee } from 'lucide-react';
 
 const Chat = ({ socket }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [players, setPlayers] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [babelFishStatus, setBabelFishStatus] = useState('active');
+  const [vogonWarning, setVogonWarning] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -32,7 +34,25 @@ const Chat = ({ socket }) => {
       setPlayers(playerList);
     });
 
+    // Random Babel Fish malfunctions
+    const babelInterval = setInterval(() => {
+      if (Math.random() < 0.08) { // 8% chance every 30 seconds
+        setBabelFishStatus('malfunctioning');
+        setTimeout(() => setBabelFishStatus('active'), 5000);
+      }
+    }, 30000);
+
+    // Random Vogon poetry warnings
+    const vogonInterval = setInterval(() => {
+      if (Math.random() < 0.05) { // 5% chance every 30 seconds
+        setVogonWarning(true);
+        setTimeout(() => setVogonWarning(false), 3000);
+      }
+    }, 30000);
+
     return () => {
+      clearInterval(babelInterval);
+      clearInterval(vogonInterval);
       socket.off('chatMessage');
       socket.off('playerTyping');
       socket.off('playerList');
@@ -70,16 +90,45 @@ const Chat = ({ socket }) => {
     }
   };
 
+  const getBabelFishStatusText = () => {
+    switch (babelFishStatus) {
+      case 'active':
+        return 'Babel Fish Universal Translator Active';
+      case 'malfunctioning':
+        return 'Babel Fish Malfunctioning - Translation May Be Inaccurate';
+      default:
+        return 'Babel Fish Status Unknown';
+    }
+  };
+
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <MessageCircle size={20} />
-        <h3>Explorer Chat</h3>
+        <div className="babel-fish-status">
+          <Fish size={16} />
+          <span className={babelFishStatus}>{getBabelFishStatusText()}</span>
+        </div>
+        <div className="chat-title">
+          <MessageCircle size={20} />
+          <h3>Babel Fish Chat</h3>
+        </div>
         <div className="online-players">
           <Users size={16} />
-          <span>{players.length} online</span>
+          <span>{players.length} hitchhikers online</span>
         </div>
       </div>
+
+      {vogonWarning && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="vogon-warning"
+        >
+          <Music size={16} />
+          <span>⚠️ Vogon Poetry Detected Nearby ⚠️</span>
+        </motion.div>
+      )}
 
       <div className="chat-messages">
         {messages.map((message) => (
@@ -94,7 +143,13 @@ const Chat = ({ socket }) => {
               <span className="message-time">{message.timestamp}</span>
             </div>
             <div className="message-content">
-              {message.text}
+              {babelFishStatus === 'malfunctioning' && message.sender !== 'You' ? (
+                <span className="translated-text">
+                  [Translated]: {message.text.split('').reverse().join('')}
+                </span>
+              ) : (
+                message.text
+              )}
             </div>
           </motion.div>
         ))}
@@ -105,7 +160,7 @@ const Chat = ({ socket }) => {
             animate={{ opacity: 1 }}
             className="typing-indicator"
           >
-            <span>Someone is typing...</span>
+            <span>Someone is composing a message...</span>
           </motion.div>
         )}
         
@@ -120,14 +175,18 @@ const Chat = ({ socket }) => {
             handleTyping();
           }}
           onKeyPress={handleKeyPress}
-          placeholder="Type your message..."
+          placeholder={babelFishStatus === 'malfunctioning' ? 
+            "Babel Fish malfunctioning - type carefully..." : 
+            "Type your message (Babel Fish will translate)..."
+          }
           rows={2}
+          disabled={babelFishStatus === 'malfunctioning'}
         />
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={sendMessage}
-          disabled={!newMessage.trim()}
+          disabled={!newMessage.trim() || babelFishStatus === 'malfunctioning'}
           className="send-button"
         >
           <Send size={16} />
@@ -135,7 +194,7 @@ const Chat = ({ socket }) => {
       </div>
 
       <div className="players-list">
-        <h4>Online Explorers</h4>
+        <h4>Online Hitchhikers</h4>
         <div className="players">
           {players.map((player, index) => (
             <motion.div
@@ -151,11 +210,22 @@ const Chat = ({ socket }) => {
               <span className="player-name">{player.name}</span>
               {player.currentPlanet && (
                 <span className="player-location">
-                  on {player.currentPlanet}
+                  at {player.currentPlanet}
                 </span>
               )}
+              <span className="player-status">Mostly Harmless</span>
             </motion.div>
           ))}
+        </div>
+      </div>
+
+      <div className="chat-footer">
+        <div className="guide-reminder">
+          <Coffee size={14} />
+          <span>Remember: Always carry a towel</span>
+        </div>
+        <div className="panic-reminder">
+          <span>DON'T PANIC</span>
         </div>
       </div>
     </div>

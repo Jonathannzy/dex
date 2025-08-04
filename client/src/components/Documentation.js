@@ -9,7 +9,9 @@ import {
   Globe,
   Calendar,
   User,
-  MapPin
+  Coffee,
+  Heart,
+  Zap
 } from 'lucide-react';
 import io from 'socket.io-client';
 
@@ -22,36 +24,44 @@ const Documentation = () => {
   const [selectedPlanet, setSelectedPlanet] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
   const [sortBy, setSortBy] = useState('date');
+  const [guideEdition, setGuideEdition] = useState('42nd Edition');
 
-  const planetNames = {
-    0: 'Mercury',
-    1: 'Venus', 
-    2: 'Earth',
-    3: 'Mars',
-    4: 'Jupiter',
-    5: 'Saturn',
-    6: 'Uranus',
-    7: 'Neptune'
+  const locationNames = {
+    0: 'Magrathea',
+    1: 'Vogon Homeworld', 
+    2: 'Damogran',
+    3: 'Vogon Constructor Fleet',
+    4: 'Heart of Gold',
+    5: 'Milliways',
+    6: 'Vogon Poetry Reading',
+    7: 'Deep Thought'
   };
 
   const discoveryTypes = {
-    craters: 'Impact Craters',
-    mountains: 'Mountain Ranges',
-    plains: 'Vast Plains',
-    volcanoes: 'Active Volcanoes',
-    acid_rain: 'Acid Rain',
-    thick_atmosphere: 'Dense Atmosphere',
-    oceans: 'Oceans',
-    continents: 'Continents',
-    life: 'Life Forms',
-    canyons: 'Deep Canyons',
-    dust_storms: 'Dust Storms',
-    polar_caps: 'Polar Ice Caps',
-    storms: 'Atmospheric Storms',
-    moons: 'Natural Satellites',
-    rings: 'Planetary Rings',
-    ice: 'Ice Formations',
-    wind: 'High Winds'
+    planet_factory: 'Planet Factory',
+    underground_cities: 'Underground Cities',
+    slumbering_workers: 'Slumbering Workers',
+    bureaucracy_offices: 'Bureaucracy Offices',
+    paperwork_mountains: 'Paperwork Mountains',
+    vogon_poetry: 'Vogon Poetry',
+    guide_offices: 'Guide Offices',
+    tropical_beaches: 'Tropical Beaches',
+    babel_fish_pools: 'Babel Fish Pools',
+    constructor_ships: 'Constructor Ships',
+    demolition_orders: 'Demolition Orders',
+    bureaucratic_red_tape: 'Bureaucratic Red Tape',
+    infinite_improbability_drive: 'Infinite Improbability Drive',
+    tea_machine: 'Tea Machine',
+    marvin_android: 'Marvin Android',
+    restaurant_kitchen: 'Restaurant Kitchen',
+    time_viewing_windows: 'Time Viewing Windows',
+    cosmic_cuisine: 'Cosmic Cuisine',
+    poetry_podium: 'Poetry Podium',
+    audience_seats: 'Audience Seats',
+    third_worst_poetry: 'Third Worst Poetry',
+    computer_terminals: 'Computer Terminals',
+    answer_calculation: 'Answer Calculation',
+    seven_million_years: 'Seven Million Years'
   };
 
   useEffect(() => {
@@ -96,7 +106,7 @@ const Documentation = () => {
         case 'date':
           return new Date(b.timestamp) - new Date(a.timestamp);
         case 'planet':
-          return planetNames[a.planetId].localeCompare(planetNames[b.planetId]);
+          return locationNames[a.planetId].localeCompare(locationNames[b.planetId]);
         case 'discoverer':
           return a.discoveredBy.localeCompare(b.discoveredBy);
         case 'type':
@@ -113,16 +123,16 @@ const Documentation = () => {
     navigate('/game');
   };
 
-  const getPlanetColor = (planetId) => {
+  const getLocationColor = (planetId) => {
     const colors = {
-      0: '#8B7355', // Mercury
-      1: '#FFA500', // Venus
-      2: '#4B9CD3', // Earth
-      3: '#CD5C5C', // Mars
-      4: '#DAA520', // Jupiter
-      5: '#F4A460', // Saturn
-      6: '#40E0D0', // Uranus
-      7: '#4169E1'  // Neptune
+      0: '#8B4513', // Magrathea
+      1: '#556B2F', // Vogon Homeworld
+      2: '#228B22', // Damogran
+      3: '#696969', // Vogon Constructor Fleet
+      4: '#FFD700', // Heart of Gold
+      5: '#FF6347', // Milliways
+      6: '#8B0000', // Vogon Poetry Reading
+      7: '#4169E1'  // Deep Thought
     };
     return colors[planetId] || '#666';
   };
@@ -137,12 +147,23 @@ const Documentation = () => {
           className="back-button"
         >
           <ArrowLeft size={20} />
-          Back to Game
+          Back to Galaxy
         </motion.button>
 
         <div className="header-content">
-          <h1>Exploration Documentation</h1>
-          <p>Complete record of all discoveries across the solar system</p>
+          <h1>The Hitchhiker's Guide to the Galaxy</h1>
+          <div className="guide-edition">
+            <BookOpen size={24} />
+            <span>{guideEdition}</span>
+          </div>
+          <p>Complete repository of all knowledge and wisdom (mostly harmless)</p>
+        </div>
+      </div>
+
+      <div className="guide-intro">
+        <div className="guide-quote">
+          <p>"The Hitchhiker's Guide to the Galaxy has already supplanted the great Encyclopedia Galactica as the standard repository of all knowledge and wisdom, for though it has many omissions and contains much that is apocryphal, or at least wildly inaccurate, it scores over the older, more pedestrian work in two important respects.</p>
+          <p>First, it is slightly cheaper; and secondly, it has the words DON'T PANIC inscribed in large friendly letters on its cover."</p>
         </div>
       </div>
 
@@ -152,7 +173,7 @@ const Documentation = () => {
             <Search size={20} />
             <input
               type="text"
-              placeholder="Search discoveries..."
+              placeholder="Search Guide entries..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -161,20 +182,20 @@ const Documentation = () => {
 
         <div className="filter-section">
           <div className="filter-group">
-            <label>Planet:</label>
+            <label>Location:</label>
             <select 
               value={selectedPlanet} 
               onChange={(e) => setSelectedPlanet(e.target.value)}
             >
-              <option value="all">All Planets</option>
-              {Object.entries(planetNames).map(([id, name]) => (
+              <option value="all">All Locations</option>
+              {Object.entries(locationNames).map(([id, name]) => (
                 <option key={id} value={id}>{name}</option>
               ))}
             </select>
           </div>
 
           <div className="filter-group">
-            <label>Type:</label>
+            <label>Entry Type:</label>
             <select 
               value={selectedType} 
               onChange={(e) => setSelectedType(e.target.value)}
@@ -193,9 +214,9 @@ const Documentation = () => {
               onChange={(e) => setSortBy(e.target.value)}
             >
               <option value="date">Date</option>
-              <option value="planet">Planet</option>
-              <option value="discoverer">Discoverer</option>
-              <option value="type">Type</option>
+              <option value="planet">Location</option>
+              <option value="discoverer">Contributor</option>
+              <option value="type">Entry Type</option>
             </select>
           </div>
         </div>
@@ -206,7 +227,7 @@ const Documentation = () => {
           <Globe size={24} />
           <div>
             <h3>{allDiscoveries.length}</h3>
-            <p>Total Discoveries</p>
+            <p>Guide Entries</p>
           </div>
         </div>
         <div className="stat-card">
@@ -220,7 +241,14 @@ const Documentation = () => {
           <User size={24} />
           <div>
             <h3>{new Set(allDiscoveries.map(d => d.discoveredBy)).size}</h3>
-            <p>Explorers</p>
+            <p>Contributors</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <Heart size={24} />
+          <div>
+            <h3>42</h3>
+            <p>The Answer</p>
           </div>
         </div>
       </div>
@@ -234,12 +262,12 @@ const Documentation = () => {
             className="discovery-document"
           >
             <div className="document-header">
-              <div className="planet-indicator" style={{ backgroundColor: getPlanetColor(discovery.planetId) }}>
+              <div className="planet-indicator" style={{ backgroundColor: getLocationColor(discovery.planetId) }}>
                 <Globe size={16} />
               </div>
               <div className="discovery-meta">
                 <h3>{discoveryTypes[discovery.type]}</h3>
-                <p>on {planetNames[discovery.planetId]}</p>
+                <p>at {locationNames[discovery.planetId]}</p>
               </div>
               <div className="discovery-date">
                 <Calendar size={14} />
@@ -250,7 +278,7 @@ const Documentation = () => {
             <div className="discovery-content">
               <div className="discoverer-info">
                 <User size={14} />
-                <span>Discovered by {discovery.discoveredBy}</span>
+                <span>Contributed by {discovery.discoveredBy}</span>
               </div>
               
               {discovery.documentation && (
@@ -264,7 +292,7 @@ const Documentation = () => {
             <div className="document-footer">
               <span className="discovery-type">{discoveryTypes[discovery.type]}</span>
               {discovery.documentation && (
-                <span className="documented-badge">Documented</span>
+                <span className="documented-badge">Guide Entry Complete</span>
               )}
             </div>
           </motion.div>
@@ -274,10 +302,21 @@ const Documentation = () => {
       {filteredDiscoveries.length === 0 && (
         <div className="no-discoveries">
           <BookOpen size={48} />
-          <h3>No discoveries found</h3>
-          <p>Try adjusting your search criteria or explore more planets!</p>
+          <h3>No Guide entries found</h3>
+          <p>Try adjusting your search criteria or explore more locations!</p>
+          <small>Remember: DON'T PANIC</small>
         </div>
       )}
+
+      <div className="guide-footer">
+        <div className="guide-disclaimer">
+          <Coffee size={20} />
+          <div>
+            <h4>Guide Disclaimer</h4>
+            <p>This Guide contains many omissions and much that is apocryphal, or at least wildly inaccurate. However, it is slightly cheaper than the Encyclopedia Galactica and has the words DON'T PANIC inscribed in large friendly letters on its cover.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
